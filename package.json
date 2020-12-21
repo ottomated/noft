@@ -1,0 +1,54 @@
+{
+  "name": "ts-react-boilerplate",
+  "version": "1.0.0",
+  "description": "Chrome extension boilerplate with TypeScript and React",
+  "keywords": [
+    "chrome-extension",
+    "web-extension",
+    "typescript",
+    "react",
+    "rollup",
+    "boilerplate"
+  ],
+  "homepage": "https://github.com/extend-chrome/ts-react-boilerplate#readme",
+  "bugs": {
+    "url": "https://github.com/extend-chrome/ts-react-boilerplate/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/extend-chrome/ts-react-boilerplate.git"
+  },
+  "license": "MIT",
+  "author": "Jack Steam<jacksteamdev@gmail.com>",
+  "scripts": {
+    "build": "rollup -c",
+    "start": "rollup -c -w",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "cross-env NODE_ENV=production rollup -c"
+  },
+  "dependencies": {
+    "@types/chrome": "^0.0.127",
+    "@types/firefox-webext-browser": "^82.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "prettier": "^2.2.1",
+    "react": "npm:@esm-bundle/react@^17.0.1-fix.0",
+    "react-dom": "npm:@esm-bundle/react-dom@^17.0.1",
+    "webextension-polyfill-ts": "^0.22.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-node-resolve": "^11.0.1",
+    "@rollup/plugin-typescript": "^8.1.0",
+    "@typescript-eslint/eslint-plugin": "^4.10.0",
+    "@typescript-eslint/parser": "^4.10.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.16.0",
+    "eslint-plugin-react": "^7.21.5",
+    "rollup": "^2.35.1",
+    "rollup-plugin-chrome-extension": "^3.4.0",
+    "rollup-plugin-zip": "^1.0.1",
+    "tslib": "^2.0.3",
+    "typescript": "^4.1.3"
+  }
+}
