@@ -1,6 +1,7 @@
 {
   "name": "@extend-chrome/ts-react-boilerplate",
   "version": "1.0.0",
+  "private": true,
   "description": "Chrome extension boilerplate with TypeScript and React",
   "keywords": [
     "chrome-extension",
@@ -22,9 +23,9 @@
   "author": "Jack Steam<jacksteamdev@gmail.com>",
   "scripts": {
     "build": "rollup -c",
+    "release": "cross-env NODE_ENV=production rollup -c",
     "start": "rollup -c -w",
-    "test": "jest",
-    "release": "cross-env NODE_ENV=production rollup -c"
+    "test": "jest"
   },
   "dependencies": {
     "@types/chrome": "^0.0.127",
