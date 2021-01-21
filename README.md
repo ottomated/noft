@@ -1,13 +1,14 @@
 # TypeScript React Chrome Extension Boilerplate
 
-A basic TypeScript React Chrome Extension boilerplate that gets you started quickly. It supports TypeScript, [ESM compatible React](https://medium.com/@joeldenning/an-esm-bundle-for-any-npm-package-5f850db0e04d) and automatic reloading during development. Jest, ESLint and Prettier included. Bundled using [Rollup](https://rollupjs.org/guide/en/)
+A basic TypeScript React Chrome Extension boilerplate that gets you started quickly. It supports TypeScript, [ESM compatible React](https://medium.com/@joeldenning/an-esm-bundle-for-any-npm-package-5f850db0e04d) and automatic reloading during development. Jest, ESLint and Prettier included, all bundled using [Rollup](https://rollupjs.org/guide/en/).
 
 ## Get Started
 
 Type this into your terminal:
 
 ```sh
-git clone https://github.com/extend-chrome/js-react-boilerplate.git
+git clone https://github.com/extend-chrome/js-react-boilerplate.git my-chrome-extension
+cd my-chrome-extension
 npm install
 ```
 
