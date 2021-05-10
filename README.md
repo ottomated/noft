@@ -1,16 +1,30 @@
 # TypeScript React Chrome Extension Boilerplate
 
-A basic TypeScript React Chrome Extension boilerplate that gets you started quickly. It supports TypeScript, [ESM compatible React](https://medium.com/@joeldenning/an-esm-bundle-for-any-npm-package-5f850db0e04d) and automatic reloading during development. Jest, ESLint and Prettier included, all bundled using [Rollup](https://rollupjs.org/guide/en/).
+A basic TypeScript React Chrome Extension boilerplate that gets you started quickly. It supports TypeScript, JSX, and automatic reloading during development. Jest, ESLint and Prettier included, all bundled using [Rollup](https://rollupjs.org/guide/en/) and [`rollup-plugin-chrome-extension`](https://extend-chrome.dev/rollup-plugin).
 
 ## Get Started
+
+### Using `create-react-crx`
 
 Type this into your terminal:
 
 ```sh
-git clone https://github.com/extend-chrome/js-react-boilerplate.git my-chrome-extension
+npx create-react-crx
+```
+
+Follow the prompts to setup your Chrome extension project.
+
+### Using `git clone`
+
+Type this into your terminal:
+
+```sh
+git clone https://github.com/extend-chrome/ts-react-boilerplate.git my-chrome-extension
 cd my-chrome-extension
 npm install
 ```
+
+> 🖌️ Update your package name and version in `package.json` before you get started!
 
 ### Development
 
@@ -22,6 +36,8 @@ npm run start
 
 Open the [Extensions Dashboard](chrome://extensions), enable "Developer mode", click "Load unpacked", and choose the `dist` folder.
 
+When you make changes in `src` the background script and any content script will reload automatically.
+
 ### Production
 
 When it's time to publish your Chrome make a production build. Run the following line:
@@ -32,6 +48,8 @@ npm run build
 
 This will create a ZIP file with your package name and version in the `releases`
 folder.
+
+> Make sure you have updated the name and version of your extension in `package.json`.
 
 ## Source Layout
 
