@@ -54,7 +54,7 @@
     "rollup": "^2.56.3",
     "rollup-plugin-chrome-extension": "^3.6.1",
     "rollup-plugin-empty-dir": "^1.0.5",
-    "rollup-plugin-zip": "^1.0.1",
+    "rollup-plugin-zip": "^1.0.3",
     "ts-jest": "^26.4.4",
     "tslib": "^2.0.3",
     "typescript": "^4.1.3"
