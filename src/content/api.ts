@@ -10,8 +10,6 @@ const webpackRequire = window.webpackJsonp.push([
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 ]) as unknown as { c: Record<string, { exports: any }> };
 
-console.log(webpackRequire);
-
 const authTokenModule = Object.values(webpackRequire.c).find((module) => {
 	const token = module.exports.d;
 	if (!token) return false;

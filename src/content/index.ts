@@ -21,16 +21,17 @@ chrome.storage.sync.get((initialSettings) => {
 			});
 		} else if (ev.data?.noftWhitelistUser) {
 			if (
-				settings.whitelistedUsers.find(
+				!settings.whitelistedUsers.find(
 					(user) => user.id === ev.data.noftWhitelistUser
 				)
-			)
+			) {
 				chrome.storage.sync.set({
 					whitelistedUsers: [
 						...settings.whitelistedUsers,
 						ev.data.noftWhitelistUser,
 					],
 				});
+			}
 		}
 	});
 

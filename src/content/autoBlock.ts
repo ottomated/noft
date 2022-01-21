@@ -1,7 +1,7 @@
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import './toast.css';
-import icon from '../assets/icon.png';
+import icon from '../assets/icon128.png';
 import { Settings } from '../common/settings.types';
 import { authed, blockUser, muteUser } from './api';
 
@@ -20,7 +20,6 @@ window.addEventListener('message', (ev) => {
 const openPopups = new Set<string>();
 
 function onNFTDetected(user: User) {
-	console.log(user);
 	if (!authed) return;
 	if (!settings) return;
 	if (user.alreadyBlocked || user.alreadyMuted) return;
@@ -41,12 +40,11 @@ function onNFTDetected(user: User) {
 		theme: 'dark',
 		drag: false,
 		position: 'bottomLeft',
-		timeout: 10000,
+		timeout: 5000,
 		buttons: [
 			[
 				'<button>UNDO</button>',
 				function (toast, instance) {
-					console.log('Undoing', user.id);
 					toast.hide({}, instance, 'undo');
 				},
 				false,

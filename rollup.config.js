@@ -1,5 +1,6 @@
 import path from 'path'
 
+import { terser } from "rollup-plugin-terser";
 import css from "rollup-plugin-postcss";
 import image from '@rollup/plugin-image';
 import resolve from '@rollup/plugin-node-resolve'
@@ -13,16 +14,16 @@ import replace from '@rollup/plugin-replace'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
-export default {
-  input: 'src/manifest.ts',
+const getConfig = (version) => ({
+  input: `src/manifest.${version}.ts`,
   output: {
-    dir: 'dist',
+    dir: 'dist/' + version,
     format: 'esm',
-    chunkFileNames: path.join('chunks','[name]-[hash].js'),
+    chunkFileNames: path.join('chunks', '[name]-[hash].js'),
   },
   plugins: [
     replace({
-      'process.env.NODE_ENV': isProduction ? JSON.stringify( 'production' ) : JSON.stringify( 'development' ),
+      'process.env.NODE_ENV': isProduction ? JSON.stringify('production') : JSON.stringify('development'),
       preventAssignment: true
     }),
     chromeExtension(),
@@ -35,7 +36,13 @@ export default {
     image(),
     // Empties the output dir before a new build
     emptyDir(),
+    isProduction &&  terser(),
     // Outputs a zip file in ./releases
-    isProduction && zip({ dir: 'releases' }),
+    isProduction && zip({ dir: 'releases/' + version }),
   ],
-}
+});
+
+const configs = [getConfig('v3')];
+if (isProduction) configs.push(getConfig('v2'));
+
+export default configs;

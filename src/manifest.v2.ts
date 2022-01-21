@@ -1,12 +1,18 @@
-const manifest: chrome.runtime.Manifest = {
+const manifest: chrome.runtime.ManifestV2 = {
 	name: 'NoFT',
 	manifest_version: 2,
 	version: '1.0.0',
+	browser_specific_settings: {
+		gecko: {
+			id: 'noft@ottomated.net',
+			strict_min_version: '89.0',
+		},
+	},
 	icons: {
 		256: 'assets/icon.png',
-	},
-	background: {
-		scripts: ['background/index.ts'],
+		128: 'assets/icon128.png',
+		48: 'assets/icon48.png',
+		16: 'assets/icon16.png',
 	},
 	permissions: ['storage'],
 	content_scripts: [

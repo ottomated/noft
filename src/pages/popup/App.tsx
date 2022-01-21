@@ -35,7 +35,7 @@ const App = ({
 	return (
 		<div>
 			<div className="row">
-				<img src="/assets/icon.png" width={48} height={48} />
+				<img src="/assets/icon128.png" width={48} height={48} />
 				<h1>NoFT Options</h1>
 			</div>
 			<div className="row">
