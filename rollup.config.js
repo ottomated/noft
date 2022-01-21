@@ -1,5 +1,7 @@
 import path from 'path'
 
+import css from "rollup-plugin-postcss";
+import image from '@rollup/plugin-image';
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
@@ -12,7 +14,7 @@ import replace from '@rollup/plugin-replace'
 const isProduction = process.env.NODE_ENV === 'production'
 
 export default {
-  input: 'src/manifest.json',
+  input: 'src/manifest.ts',
   output: {
     dir: 'dist',
     format: 'esm',
@@ -29,6 +31,8 @@ export default {
     resolve(),
     commonjs(),
     typescript(),
+    css(),
+    image(),
     // Empties the output dir before a new build
     emptyDir(),
     // Outputs a zip file in ./releases

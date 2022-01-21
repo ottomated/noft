@@ -1,9 +1,13 @@
-import React from 'react'
-import { render } from 'react-dom'
-import App from './App'
+import React from 'react';
+import { render } from 'react-dom';
+import { Settings, settingsDefaults } from '../../common/settings.types';
+import App from './App';
 
-console.log('popup script')
+chrome.storage.sync.get((settings) => {
+	const root = document.querySelector('#root');
 
-const root = document.querySelector('#root')
-
-render(<App />, root)
+	render(
+		<App initialSettings={{ ...settingsDefaults, ...settings } as Settings} />,
+		root
+	);
+});
