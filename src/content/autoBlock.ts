@@ -3,7 +3,6 @@ import 'izitoast/dist/css/iziToast.min.css';
 import './toast.css';
 import icon from '../assets/icon128.png';
 import { Settings } from '../common/settings.types';
-import { authed } from './api';
 
 let settings: Settings | undefined;
 
@@ -20,18 +19,23 @@ window.addEventListener('message', (ev) => {
 const openPopups = new Set<string>();
 
 function onNFTDetected(user: User) {
-	if (!authed) return;
 	if (!settings) return;
 	if (settings.action === 'none') return;
+	// Cancel if already blocked
 	if (user.alreadyBlocked || user.alreadyMuted) return;
+	// Check settings
 	if (user.verified && !settings.actionOnVerifiedAccounts) return;
 	if (user.following && !settings.actionOnFollowingAccounts) return;
 	if (user.followed_by && !settings.actionOnFollowedByAccounts) return;
+	// Check open popups
 	if (openPopups.has(user.id)) return;
+	// Check whitelist
 	if (
 		settings.whitelistedUsers.find((whitelisted) => whitelisted.id === user.id)
 	)
 		return;
+	// Check pending actions
+	if (settings.actionQueue.find((queued) => queued.id === user.id)) return;
 	openPopups.add(user.id);
 	iziToast.show({
 		title: `${settings.action === 'block' ? 'Blocked' : 'Muted'} ${user.name}`,
@@ -53,20 +57,21 @@ function onNFTDetected(user: User) {
 		],
 		onClosing: (_, __, closedBy) => {
 			openPopups.delete(user.id);
-			if (closedBy !== 'undo') {
-				window.postMessage({
-					noftRequest: 'doAction',
-					data: {
-						id: user.id,
-						action: settings?.action,
-					},
-				});
-			} else {
+			if (closedBy === 'undo') {
 				window.postMessage({
 					noftRequest: 'whitelist',
 					data: { id: user.id, name: user.name },
 				});
 			}
+		},
+		onOpened: () => {
+			window.postMessage({
+				noftRequest: 'doAction',
+				data: {
+					id: user.id,
+					action: settings?.action,
+				},
+			});
 		},
 	});
 }

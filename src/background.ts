@@ -2,7 +2,7 @@ import type { Settings } from './common/settings.types';
 
 chrome.runtime.onInstalled.addListener(() => {
 	chrome.alarms.create({
-		periodInMinutes: 5,
+		periodInMinutes: 2,
 	});
 });
 
@@ -39,14 +39,14 @@ async function performAction(
 	queue: Settings['actionQueue']
 ) {
 	console.log('Performing action:', action);
-	switch (action.action) {
-		case 'block':
-			await fetchApi('/blocks/create.json', 'user_id=' + action.id);
-			break;
-		case 'mute':
-			await fetchApi('/mutes/users/create.json', 'user_id=' + action.id);
-			break;
-	}
+	// switch (action.action) {
+	// 	case 'block':
+	// 		await fetchApi('/blocks/create.json', 'user_id=' + action.id);
+	// 		break;
+	// 	case 'mute':
+	// 		await fetchApi('/mutes/users/create.json', 'user_id=' + action.id);
+	// 		break;
+	// }
 	action.doneAt = Date.now();
 	// chrome.storage.sync.set({ actionQueue: queue });
 }

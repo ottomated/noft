@@ -11,6 +11,24 @@ function injectScript(url: string): void {
 injectScript('content/closeInfoPopup.js');
 injectScript('content/autoBlock.js');
 
+function addItemToList<K extends 'whitelistedUsers' | 'actionQueue'>(
+	key: K,
+	item: Settings[K][number]
+) {
+	return new Promise<void>((resolve) => {
+		chrome.storage.sync.get(key, (settings) => {
+			const list = settings[key] as typeof item[];
+			list.push(item);
+			chrome.storage.sync.set(
+				{
+					[key]: list,
+				},
+				() => resolve()
+			);
+		});
+	});
+}
+
 chrome.storage.sync.get((initialSettings) => {
 	const settings: Settings = { ...settingsDefaults, ...initialSettings };
 
@@ -26,9 +44,7 @@ chrome.storage.sync.get((initialSettings) => {
 				if (
 					!settings.whitelistedUsers.find((user) => user.id === ev.data.data.id)
 				) {
-					chrome.storage.sync.set({
-						whitelistedUsers: [...settings.whitelistedUsers, ev.data.data],
-					} as Settings);
+					addItemToList('whitelistedUsers', ev.data.data);
 				}
 				break;
 			}
@@ -37,15 +53,7 @@ chrome.storage.sync.get((initialSettings) => {
 					(action) => action.id === ev.data.data.id && !action.doneAt
 				);
 				if (!oldAction) {
-					chrome.storage.sync.set({
-						actionQueue: [
-							...settings.actionQueue,
-							{
-								id: ev.data.data.id,
-								action: ev.data.data.action,
-							},
-						],
-					} as Settings);
+					addItemToList('actionQueue', ev.data.data);
 				}
 			}
 		}
