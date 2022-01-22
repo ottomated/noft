@@ -15,22 +15,38 @@ chrome.storage.sync.get((initialSettings) => {
 	const settings: Settings = { ...settingsDefaults, ...initialSettings };
 
 	window.addEventListener('message', (ev) => {
-		if (ev.data?.noftSettingsRequest) {
-			window.postMessage({
-				noftSettingsResponse: settings,
-			});
-		} else if (ev.data?.noftWhitelistUser) {
-			if (
-				!settings.whitelistedUsers.find(
-					(user) => user.id === ev.data.noftWhitelistUser
-				)
-			) {
-				chrome.storage.sync.set({
-					whitelistedUsers: [
-						...settings.whitelistedUsers,
-						ev.data.noftWhitelistUser,
-					],
+		switch (ev.data?.noftRequest) {
+			case 'settings': {
+				window.postMessage({
+					noftSettingsResponse: settings,
 				});
+				break;
+			}
+			case 'whitelist': {
+				if (
+					!settings.whitelistedUsers.find((user) => user.id === ev.data.data.id)
+				) {
+					chrome.storage.sync.set({
+						whitelistedUsers: [...settings.whitelistedUsers, ev.data.data],
+					} as Settings);
+				}
+				break;
+			}
+			case 'doAction': {
+				const oldAction = settings.actionQueue.find(
+					(action) => action.id === ev.data.data.id && !action.doneAt
+				);
+				if (!oldAction) {
+					chrome.storage.sync.set({
+						actionQueue: [
+							...settings.actionQueue,
+							{
+								id: ev.data.data.id,
+								action: ev.data.data.action,
+							},
+						],
+					} as Settings);
+				}
 			}
 		}
 	});

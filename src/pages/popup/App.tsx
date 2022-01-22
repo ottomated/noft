@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Settings, settingsDefaults } from '../../common/settings.types';
 
 const App = ({
@@ -30,10 +30,24 @@ const App = ({
 		});
 	};
 
-	const action = settings.action === 'block' ? 'Block' : 'Mute';
+	const action = settings.action === 'mute' ? 'Mute' : 'Block';
+
+	const [totalBlocked, totalPending] = useMemo(() => {
+		let totalBlocked = 0;
+		let totalPending = 0;
+		for (const item of settings.actionQueue) {
+			if (item.doneAt) totalBlocked++;
+			else totalPending++;
+		}
+		return [totalBlocked, totalPending];
+	}, [settings.actionQueue]);
 
 	return (
 		<div>
+			<div className="totals">
+				{totalBlocked} total blocked
+				{totalPending > 0 ? `, ${totalPending} pending` : ''}
+			</div>
 			<div className="row">
 				<img src="/assets/icon128.png" width={48} height={48} />
 				<h1>NoFT Options</h1>
@@ -44,7 +58,7 @@ const App = ({
 					className="dropdown"
 					value={settings.action}
 					onChange={(ev) =>
-						setSetting('action', ev.target.value as 'block' | 'mute')
+						setSetting('action', ev.target.value as 'block' | 'mute' | 'none')
 					}
 				>
 					<option value="block">Block</option>
@@ -54,6 +68,7 @@ const App = ({
 			</div>
 			<div className="row">
 				<input
+					disabled={settings.action === 'none'}
 					id="followed-by"
 					type="checkbox"
 					checked={settings.actionOnFollowedByAccounts}
@@ -65,6 +80,7 @@ const App = ({
 			</div>
 			<div className="row">
 				<input
+					disabled={settings.action === 'none'}
 					id="following"
 					type="checkbox"
 					checked={settings.actionOnFollowingAccounts}
@@ -76,6 +92,7 @@ const App = ({
 			</div>
 			<div className="row">
 				<input
+					disabled={settings.action === 'none'}
 					id="verified"
 					type="checkbox"
 					checked={settings.actionOnVerifiedAccounts}
@@ -85,24 +102,32 @@ const App = ({
 				/>
 				<label htmlFor="following">{action} verified accounts</label>
 			</div>
-			<h3>Whitelisted Users</h3>
-			<p className="help-text">
-				Users are whitelisted when you press "UNDO" in the NoFT popup
-			</p>
-			<div className="whitelist">
-				{settings.whitelistedUsers.map((user) => (
-					<div className="whitelist-entry" key={user.id} data-userId={user.id}>
-						<span>@{user.name}</span>
-						<a
-							href="#"
-							onClick={() => removeWhitelist(user.id)}
-							className="unwhitelist"
-						>
-							un-whitelist
-						</a>
+			{settings.whitelistedUsers.length > 0 && (
+				<>
+					<h3>Whitelisted Users</h3>
+					<p className="help-text">
+						Users are whitelisted when you press "UNDO" in the NoFT popup
+					</p>
+					<div className="whitelist">
+						{settings.whitelistedUsers.map((user) => (
+							<div
+								className="whitelist-entry"
+								key={user.id}
+								data-userId={user.id}
+							>
+								<span>@{user.name}</span>
+								<a
+									href="#"
+									onClick={() => removeWhitelist(user.id)}
+									className="unwhitelist"
+								>
+									un-whitelist
+								</a>
+							</div>
+						))}
 					</div>
-				))}
-			</div>
+				</>
+			)}
 		</div>
 	);
 };

@@ -1,20 +1,16 @@
 const manifest: chrome.runtime.ManifestV2 = {
 	name: 'NoFT',
 	manifest_version: 2,
-	version: '1.0.0',
-	browser_specific_settings: {
-		gecko: {
-			id: 'noft@ottomated.net',
-			strict_min_version: '89.0',
-		},
+	version: process.env.npm_package_version || '1.0.0',
+	background: {
+		scripts: ['background.ts'],
 	},
 	icons: {
-		256: 'assets/icon.png',
-		128: 'assets/icon128.png',
-		48: 'assets/icon48.png',
-		16: 'assets/icon16.png',
+		'128': 'assets/icon128.png',
+		'48': 'assets/icon48.png',
+		'16': 'assets/icon16.png',
 	},
-	permissions: ['storage'],
+	permissions: ['storage', 'alarms', 'cookies'],
 	content_scripts: [
 		{
 			js: ['content/index.ts'],
@@ -30,6 +26,12 @@ const manifest: chrome.runtime.ManifestV2 = {
 		'content/closeInfoPopup.ts',
 		'content/autoBlock.ts',
 	],
+	browser_specific_settings: {
+		gecko: {
+			id: 'noft@ottomated.net',
+			strict_min_version: '89.0',
+		},
+	},
 };
 
 export default manifest;

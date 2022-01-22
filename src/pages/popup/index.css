@@ -62,3 +62,9 @@ select {
 .unwhitelist:hover {
 	text-decoration-color: rgba(64, 224, 208, 1);
 }
+
+.totals {
+	position: absolute;
+	top: 2px;
+	right: 2px;
+}
