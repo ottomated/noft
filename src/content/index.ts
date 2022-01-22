@@ -1,4 +1,5 @@
 import { Settings, settingsDefaults } from '../common/settings.types';
+import { addItemToList } from '../common/util';
 
 function injectScript(url: string): void {
 	const target = document.head || document.documentElement;
@@ -10,24 +11,6 @@ function injectScript(url: string): void {
 
 injectScript('content/closeInfoPopup.js');
 injectScript('content/autoBlock.js');
-
-function addItemToList<K extends 'whitelistedUsers' | 'actionQueue'>(
-	key: K,
-	item: Settings[K][number]
-) {
-	return new Promise<void>((resolve) => {
-		chrome.storage.sync.get(key, (settings) => {
-			const list = settings[key] as typeof item[];
-			list.push(item);
-			chrome.storage.sync.set(
-				{
-					[key]: list,
-				},
-				() => resolve()
-			);
-		});
-	});
-}
 
 chrome.storage.sync.get((initialSettings) => {
 	const settings: Settings = { ...settingsDefaults, ...initialSettings };

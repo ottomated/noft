@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Settings, settingsDefaults } from '../../common/settings.types';
+import { addItemToList } from '../../common/util';
 
 const App = ({
 	initialSettings,
@@ -30,7 +31,8 @@ const App = ({
 		});
 	};
 
-	const action = settings.action === 'mute' ? 'Mute' : 'Block';
+	const action =
+		settings.action[0].toUpperCase() + settings.action.substring(1);
 
 	const [totalBlocked, totalPending] = useMemo(() => {
 		let totalBlocked = 0;
@@ -42,6 +44,18 @@ const App = ({
 		return [totalBlocked, totalPending];
 	}, [settings.actionQueue]);
 
+	const handleFollow = () => {
+		setSetting('followedOtto', true);
+		addItemToList(
+			'actionQueue',
+			{
+				id: '903244989206892544',
+				action: 'follow',
+			},
+			'prepend'
+		);
+	};
+
 	return (
 		<div>
 			<div className="totals">
@@ -52,23 +66,37 @@ const App = ({
 				<img src="/assets/icon128.png" width={48} height={48} />
 				<h1>NoFT Options</h1>
 			</div>
+			{!settings.followedOtto && (
+				<button className="follow-btn" onClick={handleFollow}>
+					Follow @Ottomated_
+				</button>
+			)}
 			<div className="row">
 				<select
 					id="action"
 					className="dropdown"
 					value={settings.action}
 					onChange={(ev) =>
-						setSetting('action', ev.target.value as 'block' | 'mute' | 'none')
+						setSetting(
+							'action',
+							ev.target.value as 'block' | 'mute' | 'replace'
+						)
 					}
 				>
 					<option value="block">Block</option>
 					<option value="mute">Mute</option>
+					<option value="replace">Replace PFP</option>
 				</select>
-				<label htmlFor="action">detected accounts</label>
+				<label htmlFor="action">
+					{settings.action === 'replace' ? 'on ' : ''}detected accounts
+				</label>
 			</div>
+			<p className="help-text">
+				NoFT doesn't block accounts immediately - it schedules them to be
+				blocked in the background to avoid Twitter's bot detection.
+			</p>
 			<div className="row">
 				<input
-					disabled={settings.action === 'none'}
 					id="followed-by"
 					type="checkbox"
 					checked={settings.actionOnFollowedByAccounts}
@@ -80,7 +108,6 @@ const App = ({
 			</div>
 			<div className="row">
 				<input
-					disabled={settings.action === 'none'}
 					id="following"
 					type="checkbox"
 					checked={settings.actionOnFollowingAccounts}
@@ -92,7 +119,6 @@ const App = ({
 			</div>
 			<div className="row">
 				<input
-					disabled={settings.action === 'none'}
 					id="verified"
 					type="checkbox"
 					checked={settings.actionOnVerifiedAccounts}
@@ -106,14 +132,14 @@ const App = ({
 				<>
 					<h3>Whitelisted Users</h3>
 					<p className="help-text">
-						Users are whitelisted when you press "UNDO" in the NoFT popup
+						Users are whitelisted when you press "UNDO" in the NoFT popup.
 					</p>
 					<div className="whitelist">
 						{settings.whitelistedUsers.map((user) => (
 							<div
 								className="whitelist-entry"
 								key={user.id}
-								data-userId={user.id}
+								data-userid={user.id}
 							>
 								<span>@{user.name}</span>
 								<a

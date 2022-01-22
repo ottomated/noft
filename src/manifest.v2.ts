@@ -10,7 +10,7 @@ const manifest: chrome.runtime.ManifestV2 = {
 		'48': 'assets/icon48.png',
 		'16': 'assets/icon16.png',
 	},
-	permissions: ['storage', 'alarms', 'cookies'],
+	permissions: ['storage', 'alarms', 'cookies', '*://*.twitter.com/*'],
 	content_scripts: [
 		{
 			js: ['content/index.ts'],
@@ -18,7 +18,10 @@ const manifest: chrome.runtime.ManifestV2 = {
 			matches: ['*://*.twitter.com/*'],
 		},
 	],
-	options_page: 'pages/popup/index.html',
+	options_ui: {
+		page: 'pages/popup/index.html',
+		browser_style: true,
+	} as chrome.runtime.ManifestV2['options_ui'],
 	browser_action: {
 		default_popup: 'pages/popup/index.html',
 	},

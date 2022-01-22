@@ -4,6 +4,7 @@ body {
 	font-size: 18px;
 	width: 400px;
 	min-height: 200px;
+	font-family: sans-serif;
 }
 
 h1 {
@@ -42,7 +43,6 @@ select {
 	font-size: 14px;
 	color:gray;
 	font-style: italic;
-	margin-top: -12px;
 }
 
 .whitelist-entry {
@@ -67,4 +67,9 @@ select {
 	position: absolute;
 	top: 2px;
 	right: 2px;
+	color: rgb(255, 170, 170);
+}
+
+.follow-btn {
+	margin-bottom: 16px;
 }
