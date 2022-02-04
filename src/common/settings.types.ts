@@ -5,6 +5,7 @@ export interface Settings {
 	actionOnFollowingAccounts: boolean;
 	actionOnFollowedByAccounts: boolean;
 	actionOnVerifiedAccounts: boolean;
+	actionOnEthUsernames: boolean;
 	followedOtto: boolean;
 	whitelistedUsers: { id: string; name: string }[];
 	actionQueue: {
@@ -21,6 +22,7 @@ export const settingsDefaults: Settings = {
 	followedOtto: false,
 	actionOnFollowedByAccounts: true,
 	actionOnVerifiedAccounts: true,
+	actionOnEthUsernames: false,
 	whitelistedUsers: [],
 	actionQueue: [],
 };

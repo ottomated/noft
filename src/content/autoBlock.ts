@@ -118,6 +118,13 @@ interface User {
 	alreadyBlocked: boolean;
 }
 
+function blockEthUsername(userName?: string) {
+	console.log(userName);
+	return !settings?.actionOnEthUsernames || !userName
+		? false
+		: new RegExp('.eth', 'gi').test(userName);
+}
+
 type CallbackRes =
 	| [boolean | undefined, boolean | undefined, string | undefined]
 	| undefined;
@@ -129,7 +136,10 @@ function recursivelyDetectNFTs(
 	for (const key of Object.keys(json)) {
 		const value = json[key];
 		if (!value) continue;
-		if (value.id_str && value.ext_has_nft_avatar) {
+		if (
+			value.id_str &&
+			(value.ext_has_nft_avatar || blockEthUsername(value.name))
+		) {
 			const res = callback({
 				id: value.id_str,
 				name: value.screen_name,
@@ -154,7 +164,10 @@ function recursivelyDetectNFTs(
 					value.profile_image_url_http = avatar_url;
 				}
 			}
-		} else if (value.rest_id && value.has_nft_avatar) {
+		} else if (
+			value.rest_id &&
+			(value.has_nft_avatar || blockEthUsername(value.legacy.name))
+		) {
 			const res = callback({
 				id: value.rest_id,
 				name: value.legacy?.screen_name ?? '',
