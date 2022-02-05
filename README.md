@@ -2,6 +2,9 @@
 
 Automatically block all NFT profile pictures on twitter
 
+# Instalation
+You can down the NoFT extension for the chrome browser [here](https://chrome.google.com/webstore/detail/noft/ignbemmolegaffpapcfpbadjnijbalfl).
+
 ## Development
 
 ```
@@ -19,3 +22,4 @@ Add the `noft/dist/v3` folder as an unpacked extension in chrome
 yarn release
 ```
 Generates zip files in the `noft/releases` folder
+
