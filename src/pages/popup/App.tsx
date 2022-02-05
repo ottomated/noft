@@ -126,7 +126,20 @@ const App = ({
 						setSetting('actionOnVerifiedAccounts', ev.target.checked)
 					}
 				/>
-				<label htmlFor="following">{action} verified accounts</label>
+				<label htmlFor="verified">{action} verified accounts</label>
+			</div>
+			<div className="row">
+				<input
+					id="ethUsernames"
+					type="checkbox"
+					checked={settings.actionOnEthUsernames}
+					onChange={(ev) =>
+						setSetting('actionOnEthUsernames', ev.target.checked)
+					}
+				/>
+				<label htmlFor="ethUsernames">
+					{action} accounts with .eth usernames
+				</label>
 			</div>
 			{settings.whitelistedUsers.length > 0 && (
 				<>
