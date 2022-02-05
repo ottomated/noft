@@ -25,6 +25,7 @@ function onNFTDetected(user: User): CallbackRes {
 	// Cancel if already blocked
 	if (user.alreadyBlocked || user.alreadyMuted) return;
 	// Check settings
+	if (isEthUsername(user.name) && !settings.actionOnEthUsernames) return;
 	if (user.verified && !settings.actionOnVerifiedAccounts) return;
 	if (user.following && !settings.actionOnFollowingAccounts) return;
 	if (user.followed_by && !settings.actionOnFollowedByAccounts) return;
@@ -109,6 +110,7 @@ function processRequest(text: string): string {
 interface User {
 	id: string;
 	name: string;
+	displayName: string;
 
 	following: boolean;
 	followed_by: boolean;
@@ -118,11 +120,8 @@ interface User {
 	alreadyBlocked: boolean;
 }
 
-function blockEthUsername(userName?: string) {
-	console.log(userName);
-	return !settings?.actionOnEthUsernames || !userName
-		? false
-		: new RegExp('.eth', 'gi').test(userName);
+function isEthUsername(userName?: string) {
+	return !userName ? false : new RegExp('\\.eth', 'gi').test(userName);
 }
 
 type CallbackRes =
@@ -138,11 +137,12 @@ function recursivelyDetectNFTs(
 		if (!value) continue;
 		if (
 			value.id_str &&
-			(value.ext_has_nft_avatar || blockEthUsername(value.name))
+			(value.ext_has_nft_avatar || isEthUsername(value.name))
 		) {
 			const res = callback({
 				id: value.id_str,
 				name: value.screen_name,
+				displayName: value.name,
 
 				verified: value.verified ?? false,
 				followed_by: value.followed_by ?? false,
@@ -166,12 +166,12 @@ function recursivelyDetectNFTs(
 			}
 		} else if (
 			value.rest_id &&
-			(value.has_nft_avatar || blockEthUsername(value.legacy.name))
+			(value.has_nft_avatar || isEthUsername(value.legacy.name))
 		) {
 			const res = callback({
 				id: value.rest_id,
 				name: value.legacy?.screen_name ?? '',
-
+				displayName: value.legacy.name,
 				verified: value.legacy?.verified ?? false,
 				followed_by: value.legacy?.followed_by ?? false,
 				following: value.legacy?.following ?? false,
