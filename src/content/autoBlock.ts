@@ -154,7 +154,60 @@ function recursivelyDetectNFTs(
 					value.profile_image_url_http = avatar_url;
 				}
 			}
-		} else if (value.rest_id && value.has_nft_avatar) {
+		}
+		else if (value.id_str && value.ext_is_blue_verified) {
+			const res = callback({
+				id: value.id_str,
+				name: value.screen_name,
+
+				verified: value.verified ?? false,
+				followed_by: value.followed_by ?? false,
+				following: value.following ?? false,
+
+				alreadyBlocked: value.blocking ?? false,
+				alreadyMuted: value.muting ?? false,
+			});
+			if (res) {
+				const [blocking, muting, avatar_url] = res;
+
+				if (blocking !== undefined) {
+					value.blocking = blocking;
+					if (blocking) value.following = false;
+				}
+				if (muting !== undefined) value.muting = muting;
+				if (avatar_url !== undefined) {
+					value.profile_image_url_https = avatar_url;
+					value.profile_image_url_http = avatar_url;
+				}
+			}
+		}
+		else if (value.id_str && value.is_blue_verified) {
+			const res = callback({
+				id: value.id_str,
+				name: value.screen_name,
+
+				verified: value.verified ?? false,
+				followed_by: value.followed_by ?? false,
+				following: value.following ?? false,
+
+				alreadyBlocked: value.blocking ?? false,
+				alreadyMuted: value.muting ?? false,
+			});
+			if (res) {
+				const [blocking, muting, avatar_url] = res;
+
+				if (blocking !== undefined) {
+					value.blocking = blocking;
+					if (blocking) value.following = false;
+				}
+				if (muting !== undefined) value.muting = muting;
+				if (avatar_url !== undefined) {
+					value.profile_image_url_https = avatar_url;
+					value.profile_image_url_http = avatar_url;
+				}
+			}
+		} 
+		else if (value.rest_id && value.has_nft_avatar) {
 			const res = callback({
 				id: value.rest_id,
 				name: value.legacy?.screen_name ?? '',
